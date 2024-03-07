@@ -32,7 +32,7 @@ export const algorithmsHub = (
       return quickSort;
     case 'Unsorted':
       return () => {
-        return unsortedArray;
+        return { result: unsortedArray, time: 0 };
       };
   }
 };

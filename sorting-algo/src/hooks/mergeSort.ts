@@ -1,24 +1,65 @@
-export const mergeSort = (array: number[]) => {
+const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+export const mergeSort = async (
+  array: number[],
+  setArrays: (array: number[]) => void,
+  abortSignal: AbortSignal
+) => {
   const result = [...array];
 
-  sort(result);
-  return result;
+  let time = 0;
+  const timer = setInterval(() => {
+    time += 10;
+    if (abortSignal.aborted) {
+      clearInterval(timer);
+      return { time: 0 };
+    }
+  }, 10);
+
+  const start = 0;
+  const end = result.length - 1;
+
+  await sort(result, start, end, setArrays, abortSignal);
+
+  if (abortSignal.aborted) {
+    clearInterval(timer);
+    return { time: 0 };
+  }
+
+  clearInterval(timer);
+
+  return { result, time };
 };
 
-function sort(arr: number[], start = 0, end = arr.length - 1) {
+async function sort(
+  arr: number[],
+  start: number,
+  end: number,
+  setArrays: (array: number[]) => void,
+  abortSignal: AbortSignal
+) {
+  if (abortSignal.aborted) return;
+
   if (start >= end) {
     return;
   }
 
   const middle = Math.floor((start + end) / 2);
 
-  sort(arr, start, middle);
-  sort(arr, middle + 1, end);
+  await sort(arr, start, middle, setArrays, abortSignal);
+  await sort(arr, middle + 1, end, setArrays, abortSignal);
 
-  merge(arr, start, middle, end);
+  await merge(arr, start, middle, end, setArrays, abortSignal);
 }
 
-function merge(arr: number[], start: number, middle: number, end: number) {
+async function merge(
+  arr: number[],
+  start: number,
+  middle: number,
+  end: number,
+  setArrays: (array: number[]) => void,
+  abortSignal: AbortSignal
+) {
   const left = arr.slice(start, middle + 1);
   const right = arr.slice(middle + 1, end + 1);
 
@@ -36,17 +77,35 @@ function merge(arr: number[], start: number, middle: number, end: number) {
     }
 
     k++;
+
+    await delay(1);
+    if (abortSignal.aborted) {
+      return;
+    }
+    setArrays([...arr]);
   }
 
   while (i < left.length) {
     arr[k] = left[i];
     i++;
     k++;
+
+    await delay(1);
+    if (abortSignal.aborted) {
+      return;
+    }
+    setArrays([...arr]);
   }
 
   while (j < right.length) {
     arr[k] = right[j];
     j++;
     k++;
+
+    await delay(1);
+    if (abortSignal.aborted) {
+      return;
+    }
+    setArrays([...arr]);
   }
 }

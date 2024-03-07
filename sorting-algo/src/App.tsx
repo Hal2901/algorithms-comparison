@@ -2,27 +2,25 @@ import { useState } from 'react'
 import './App.css'
 import './assets/style/algo-container.scss'
 import AlgoContainer from './components/AlgoContainer'
+import { unsortedArray } from './hooks'
 
 function App() {
-  const [algo, setAlgo] = useState<
-    | 'Unsorted' |
-    'BubbleSort'
-    | 'SelectionSort'
-    | 'InsertionSort'
-    | 'MergeSort'
-    | 'QuickSort'>('SelectionSort')
+  const [isSorting, setIsSorting] = useState(false)
 
   return (
     <div>
       <div>
-        <button onClick={() => setAlgo('Unsorted')} >Unsorted</button>
-        <button onClick={() => setAlgo('SelectionSort')} >Selection Sort</button>
-        <button onClick={() => setAlgo('BubbleSort')} >Bubble Sort</button>
-        <button onClick={() => setAlgo('InsertionSort')} >Insertion Sort</button>
-        <button onClick={() => setAlgo('MergeSort')} >Merge Sort</button>
-        <button onClick={() => setAlgo('QuickSort')} >Quick Sort</button>
+        <button onClick={() => setIsSorting(false)} >Reset</button>
+        <button onClick={() => setIsSorting(true)} >Sort</button>
       </div>
-      <AlgoContainer algo={algo} />
+      <AlgoContainer unsortedArray={unsortedArray} algoName={'Unsorted'} />
+      <div>
+        <AlgoContainer isSorting={isSorting} unsortedArray={unsortedArray} algoName={'SelectionSort'} />
+        <AlgoContainer isSorting={isSorting} unsortedArray={unsortedArray} algoName={'BubbleSort'} />
+        <AlgoContainer isSorting={isSorting} unsortedArray={unsortedArray} algoName={'InsertionSort'} />
+        <AlgoContainer isSorting={isSorting} unsortedArray={unsortedArray} algoName={'MergeSort'} />
+        <AlgoContainer isSorting={isSorting} unsortedArray={unsortedArray} algoName={'QuickSort'} />
+      </div>
     </div>
   )
 }

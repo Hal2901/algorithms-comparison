@@ -1,32 +1,50 @@
 import { memo, useEffect, useState } from "react"
-import { unsortedArray, algorithmsHub } from "../hooks"
+import { algorithmsHub } from "../hooks"
 
 
-const AlgoContainer = memo(({ algo }: {
-  algo:
+const AlgoContainer = memo(({ algoName, unsortedArray, isSorting = false }: {
+  algoName:
   'Unsorted'
   | 'BubbleSort'
   | 'SelectionSort'
   | 'InsertionSort'
   | 'MergeSort'
-  | 'QuickSort'; unsorted?: boolean
+  | 'QuickSort',
+  unsortedArray: number[],
+  isSorting?: boolean
 }) => {
   const [arrays, setArrays] = useState(unsortedArray)
-  const algorithm = algorithmsHub(algo)
+  const [time, setTime] = useState(0)
+  const algorithm = algorithmsHub(algoName)
 
   useEffect(() => {
-    setArrays(algorithm(arrays))
-  }, [algo, algorithm])
+    const abortController = new AbortController()
+
+    const sortArray = async () => {
+      const { time } = await algorithm(unsortedArray, setArrays, abortController.signal)
+      // setArrays([...result])
+      setTime(time)
+    }
+
+    if (isSorting) {
+      sortArray()
+    }
+
+    if (!isSorting) {
+      abortController.abort()
+      setTime(0)
+      setArrays(unsortedArray)
+    }
+
+    return () => {
+      abortController.abort()
+    }
+  }, [algorithm, unsortedArray, isSorting])
 
   return (
     <div>
-      <div className="algo-container">
-        {unsortedArray.map((number, index) => {
-          return (
-            <div className={`algo-container-bar algo-container-bar-${number}`} key={index}>
-            </div>
-          )
-        })}
+      <div>
+        {algoName}
       </div>
       <div className="algo-container">
         {arrays.map((number, index) => {
@@ -35,6 +53,9 @@ const AlgoContainer = memo(({ algo }: {
             </div>
           )
         })}
+      </div>
+      <div>
+        {`${time}s`}
       </div>
     </div>
   )
