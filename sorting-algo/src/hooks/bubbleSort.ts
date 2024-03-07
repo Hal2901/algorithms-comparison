@@ -25,7 +25,7 @@ export const bubbleSort = async (
         result[j + 1] = temp;
       }
 
-      await delay(1);
+      await delay(0.01);
       if (abortSignal.aborted) {
         clearInterval(timer);
         return { time: 0 };

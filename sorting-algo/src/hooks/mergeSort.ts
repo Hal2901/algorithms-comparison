@@ -78,7 +78,7 @@ async function merge(
 
     k++;
 
-    await delay(1);
+    await delay(0.01);
     if (abortSignal.aborted) {
       return;
     }
@@ -90,7 +90,7 @@ async function merge(
     i++;
     k++;
 
-    await delay(1);
+    await delay(0.01);
     if (abortSignal.aborted) {
       return;
     }
@@ -102,7 +102,7 @@ async function merge(
     j++;
     k++;
 
-    await delay(1);
+    await delay(0.01);
     if (abortSignal.aborted) {
       return;
     }

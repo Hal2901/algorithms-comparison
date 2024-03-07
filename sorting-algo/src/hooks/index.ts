@@ -5,7 +5,7 @@ import { mergeSort } from './mergeSort';
 import { quickSort } from './quickSort';
 
 export const unsortedArray: number[] = [];
-for (let i = 0; i < 100; i++) {
+for (let i = 0; i < 1000; i++) {
   const randomNumber = Math.floor(Math.random() * 100);
   unsortedArray.push(randomNumber);
 }

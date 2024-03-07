@@ -64,7 +64,7 @@ async function partition(
       arr[i] = arr[idx];
       arr[idx] = temp;
 
-      await delay(1);
+      await delay(0.01);
       if (abortSignal.aborted) return idx;
       setArrays([...arr]);
     }

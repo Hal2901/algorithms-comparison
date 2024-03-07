@@ -25,7 +25,7 @@ export const selectionSort = async (
         result[j] = temp;
       }
 
-      await delay(1);
+      await delay(0.01);
       if (abortSignal.aborted) {
         clearInterval(timer);
         return { time: 0 };

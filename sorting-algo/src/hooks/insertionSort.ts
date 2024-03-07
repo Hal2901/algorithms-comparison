@@ -23,7 +23,7 @@ export const insertionSort = async (
       result[j + 1] = result[j];
       j--;
 
-      await delay(1);
+      await delay(0.01);
       if (abortSignal.aborted) {
         clearInterval(timer);
         return { time: 0 };
